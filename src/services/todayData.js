@@ -11,7 +11,10 @@ const todayData = (dataArray, date) => {
   return procRows(today);
 }
 
-const sameDay = (d1, d2) => {
+const sameDay = (input1, input2) => {
+  const d1 = typeof input1 === 'string' ? new Date(input1) : input1
+  const d2 = typeof input2 === 'string' ? new Date(input2) : input2
+
   return d1.getDate() === d2.getDate() &&
   d1.getMonth() === d2.getMonth() &&
   d1.getFullYear() === d2.getFullYear();
