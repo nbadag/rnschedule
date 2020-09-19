@@ -4,7 +4,7 @@ import tinycolor from 'tinycolor2';
 import Colors from '../constants/colors';
 import {hrsToStart} from '../services/hrsToPx';
 
-const ApptView = ({topTime, appt, hour_size, onEventPress, theme, rowIndex}) => {
+const ApptView = ({topTime, appt, hour_size, onEventPress, theme, rowIndex, renderApptView}) => {
   const color = tinycolor(appt.color).isValid() ? tinycolor(appt.color).toHexString() : Colors.red;
   const margin = hrsToStart(appt.start, topTime) * hour_size;
 
@@ -18,22 +18,28 @@ const ApptView = ({topTime, appt, hour_size, onEventPress, theme, rowIndex}) => 
       borderRadius: 5,
       padding: 2,
       overflow: 'hidden',
-      ...theme.apptView,
+      ...theme(appt).apptView,
     }}
   >
     <TouchableOpacity
       onPress={() => onEventPress(appt)}
       style={{margin: 0, padding: 0, flex: 1}}
     >
-      <Text style={[{fontWeight: '600'},tinycolor(color).isDark() && {color: 'white'}, theme.apptViewTitleText]}>
-        {appt.title}
-      </Text>
-      { !!appt.subtitle
-        ? <Text style={[{fontWeight: '200'},tinycolor(color).isDark() && {color: 'white'}, theme.apptViewSubtitleText]}>
-            {appt.subtitle}
+      {renderApptView ? (
+        renderApptView(appt)
+      ) : (
+        <React.Fragment>
+          <Text style={[{fontWeight: '600'},tinycolor(color).isDark() && {color: 'white'}, theme.apptViewTitleText]}>
+            {appt.title}
           </Text>
-        : null
-      }
+          { !!appt.subtitle
+            ? <Text style={[{fontWeight: '200'},tinycolor(color).isDark() && {color: 'white'}, theme.apptViewSubtitleText]}>
+                {appt.subtitle}
+              </Text>
+            : null
+          }
+        </React.Fragment>
+      )}
     </TouchableOpacity>
   </View>
 }

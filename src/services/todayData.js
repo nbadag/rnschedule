@@ -4,9 +4,11 @@ const todayData = (dataArray, date) => {
   if (!dataArray) { return [] }
 
   const today = dataArray.filter(appt => {
-    ret = sameDay(appt.start, date);
-    ret1 = sameDay(appt.end, date);
-    return ret || ret1;
+    const ret = sameDay(appt.start, date);
+    const ret1 = sameDay(appt.end, date);
+    const ret2 = new Date(date).valueOf() > appt.start.valueOf() && new Date(date).valueOf() < appt.end.valueOf()
+    console.log(ret, ret1, ret2)
+    return ret || ret1 || ret2;
   });
   return procRows(today);
 }
